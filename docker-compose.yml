@@ -1,0 +1,10 @@
+version: "3.3"
+services:
+  eldarback:
+    build: ./eldarback
+    ports:
+      - "8888:8080"
+  eldarfront:
+    build: ./eldarfront
+    ports:
+      - "8484:80"

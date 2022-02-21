@@ -1,0 +1,29 @@
+<div class="example-container">
+    <h2>Posibles Invitados</h2>
+  
+    <div
+      cdkDropList
+      #todoList="cdkDropList"
+      [cdkDropListData]="pending"
+      [cdkDropListConnectedTo]="[doneList]"
+      class="example-list"
+      (cdkDropListDropped)="drop($event)">
+      <div class="example-box" *ngFor="let item of pending" cdkDrag>{{item}}</div>
+    </div>
+</div>
+  
+  <div class="example-container">
+    <h2>Para Invitar</h2>
+  
+    <div
+      cdkDropList
+      #doneList="cdkDropList"
+      [cdkDropListData]="invited"
+      [cdkDropListConnectedTo]="[todoList]"
+      class="example-list"
+      (cdkDropListDropped)="drop($event)">
+      <div class="example-box" *ngFor="let item of invited" cdkDrag>{{item}}</div>
+    </div>
+  </div>
+  
+  
