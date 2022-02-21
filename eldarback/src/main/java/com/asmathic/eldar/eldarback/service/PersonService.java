@@ -15,7 +15,25 @@ public class PersonService {
         this.personRepository = personRepository;
     }
 
-    public List<Person> findAllPersons() {
-        return this.personRepository.findAll();
+    public Person saveOrUpdate(Person person) {
+        return this.personRepository.saveAndFlush(person);
+    }
+
+    public List<Person> findAvailablePeople() {
+        return this.personRepository.findByPartyIdIsNull();
+    }
+
+    public void updateInvitedPeopleState(List<Person> invitedPeople) {
+        invitedPeople.stream()
+                .map(Person::invite)
+                .forEach((invitedPerson) -> this.personRepository.save(invitedPerson));
+    }
+
+    public boolean existsById(String id) {
+        return this.personRepository.existsById(id);
+    }
+
+    public void deleteById(String id) {
+        this.personRepository.deleteById(id);
     }
 }

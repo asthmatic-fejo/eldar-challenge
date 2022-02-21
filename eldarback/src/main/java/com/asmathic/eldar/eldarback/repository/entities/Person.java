@@ -9,11 +9,13 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 
-@Getter
-@Setter
+
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity(name = "PERSONS")
+@Getter
+@Setter
+// Lombok failing locally ( I should solve it using kotlin data classes I know.. too late)
 public class Person {
 
     @Id
@@ -25,4 +27,14 @@ public class Person {
 
     @Column(name = "SURNAME")
     private String surname;
+
+    // In a better version of the app should be a foreign key to an intermediate table 'invitations'
+    // and that way support many birthdays
+    @Column(name = "PARTY_ID")
+    private Integer partyId;
+
+    public Person invite() {
+        this.partyId = 1;
+        return this;
+    }
 }

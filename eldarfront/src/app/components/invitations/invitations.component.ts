@@ -1,17 +1,33 @@
-import {Component, OnInit} from '@angular/core';
-import {CdkDragDrop, moveItemInArray, transferArrayItem} from '@angular/cdk/drag-drop';
+import { CdkDragDrop, moveItemInArray, transferArrayItem } from '@angular/cdk/drag-drop';
+import { Component, OnInit } from '@angular/core';
+import { Person } from 'src/app/model/person';
+import { InvitationServiceService as InvitationService } from 'src/app/services/invitation-service.service';
+import { PersonsDataServiceService as PersonsDataService } from 'src/app/services/persons-data-service.service';
 
 @Component({
   selector: 'app-invitations',
   templateUrl: './invitations.component.html',
   styleUrls: ['./invitations.component.css']
 })
-export class InvitationsComponent  {
-  pending = ['Get to work', 'Pick up groceries', 'Go home', 'Fall asleep'];
+export class InvitationsComponent implements OnInit {
 
-  invited = ['Get up', 'Brush teeth', 'Take a shower', 'Check e-mail', 'Walk dog'];
+  availablePeople: Person[] = []
+  confirmedPeople: Person[] = []
 
-  drop(event: CdkDragDrop<string[]>) {
+  constructor(public personService: PersonsDataService, public invitationService: InvitationService) {
+  }
+
+  ngOnInit() {
+    this.availablePeople = []
+    this.confirmedPeople = []
+    this.personService.getAvailablePeople().subscribe(data => {
+      data.forEach((algo: Person) => {
+        this.availablePeople.push(algo)
+      });
+    });;
+  }
+
+  drop(event: CdkDragDrop<Person[]>) {
     if (event.previousContainer === event.container) {
       moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
     } else {
@@ -22,5 +38,15 @@ export class InvitationsComponent  {
         event.currentIndex,
       );
     }
+  }
+
+  sendInvitations() {
+    this.invitationService.sendInvitationsTo(this.confirmedPeople).subscribe(
+      x => alert('Notificaciones enviadas exitosamente!'),
+      err => console.error('Unexpected error invitating people: ' + err),
+      () => this.ngOnInit()
+    )
+
+
   }
 }

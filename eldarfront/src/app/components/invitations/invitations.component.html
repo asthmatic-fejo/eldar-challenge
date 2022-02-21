@@ -1,29 +1,20 @@
 <div class="example-container">
-    <h2>Posibles Invitados</h2>
-  
-    <div
-      cdkDropList
-      #todoList="cdkDropList"
-      [cdkDropListData]="pending"
-      [cdkDropListConnectedTo]="[doneList]"
-      class="example-list"
-      (cdkDropListDropped)="drop($event)">
-      <div class="example-box" *ngFor="let item of pending" cdkDrag>{{item}}</div>
-    </div>
-</div>
-  
-  <div class="example-container">
-    <h2>Para Invitar</h2>
-  
-    <div
-      cdkDropList
-      #doneList="cdkDropList"
-      [cdkDropListData]="invited"
-      [cdkDropListConnectedTo]="[todoList]"
-      class="example-list"
-      (cdkDropListDropped)="drop($event)">
-      <div class="example-box" *ngFor="let item of invited" cdkDrag>{{item}}</div>
-    </div>
+  <h2>Posibles Invitados</h2>
+
+  <button mat-raised-button color="primary">Agregar posible Invitado</button>
+
+  <div cdkDropList #todoList="cdkDropList" [cdkDropListData]="availablePeople" [cdkDropListConnectedTo]="[doneList]"
+    class="example-list" (cdkDropListDropped)="drop($event)">
+    <div class="example-box" *ngFor="let item of availablePeople" cdkDrag>{{item.name}} {{item.surname}}</div>
   </div>
-  
-  
+</div>
+
+<div class="example-container">
+  <h2>Confirmados</h2>
+  <button mat-raised-button color="primary" (click)="sendInvitations()">Enviar invitaciones</button>
+
+  <div cdkDropList #doneList="cdkDropList" [cdkDropListData]="confirmedPeople" [cdkDropListConnectedTo]="[todoList]"
+    class="example-list" (cdkDropListDropped)="drop($event)">
+    <div class="example-box" *ngFor="let item of confirmedPeople" cdkDrag>{{item.name}} {{item.surname}}</div>
+  </div>
+</div>
